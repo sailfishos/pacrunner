@@ -1,0 +1,26 @@
+* Mon Jun 20 2011 Yu <yu.a.wang@intel.com> - 0.3
+- Upgrade to version 0.3
+
+* Fri Apr 29 2011 Junfeng Dong <junfeng.dong@intel.com> - 0.2
+- Fix the error caused by updating libtool.
+
+* Thu Mar 10 2011 Yu <yu.a.wang@intel.com> - 0.2
+- Make a new sub package python for pacrunner, fixe pacrunner requires python BMC#13676
+
+* Thu Jan 13 2011 Martin Xu <martin.xu@intel.com> - 0.2
+- upgrade to 0.2 for FEA #11007
+
+* Tue Dec  7 2010 David Woodhouse <David.Woodhouse@intel.com>
+- Fix cURL issues, use v8 instead of mozjs
+
+* Sat Nov 13 2010 David Woodhouse <David.Woodhouse@intel.com>
+- Avoid parallel invocation of mozjs (BMC#10014)
+
+* Sat Nov 13 2010 David Woodhouse <David.Woodhouse@intel.com>
+- Fix libproxy result for https:// URLs
+
+* Wed Nov 10 2010 David Woodhouse <David.Woodhouse@intel.com>
+- ldconfig in %post
+
+* Fri Nov  5 2010 David Woodhouse <David.Woodhouse@intel.com>
+- Initial package

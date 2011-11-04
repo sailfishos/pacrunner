@@ -1,9 +1,0 @@
-<package project="Mer:Trunk:Base" name="pacrunner">
-  <title>pacrunner</title>
-  <description>The PACrunner focus on PAC file execution. It supports a few tasks:
-    1) Configuration interface for PAC URLs
-    2) Downloading and maintaining PAC files
-    3) Exectuion of PAC files via Javascript engine
-    4) Answering of FindProxyForURL client queries
-</description>
-</package>

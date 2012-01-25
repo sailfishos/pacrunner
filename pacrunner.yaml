@@ -1,0 +1,57 @@
+Name: pacrunner
+Summary: Proxy configuration dæmon
+Version: 0.4
+Release: 3
+Group: System/Networking
+License: GPLv2
+URL: http://connman.net/
+Sources:
+    - http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.xz
+    - libproxy.py
+Description: |
+    PacRunner provides a dæmon for processing proxy configuration
+    and providing information to clients over D-Bus.
+
+PkgBR:
+    - python
+    - v8-devel
+    - pkgconfig(gthread-2.0)
+PkgConfigBR:
+    - glib-2.0
+    - dbus-1
+    - libcurl
+Provides:
+    - libproxy
+Obsoletes:
+    - libproxy < 0.5
+Configure: configure
+ConfigOptions:
+    - --enable-libproxy
+    - --enable-curl
+    - --disable-capng
+    - --enable-datafiles
+    - --enable-v8
+Builder: make
+SubPackages:
+    - Name: python
+      Summary: Python lib for PacRunner
+      Group: Development/Libraries
+      Description: A python library for proxy configuration and autodetection
+      Requires:
+          - pacrunner
+      Provides:
+          - libproxy-python
+      Obsoletes:
+          - libproxy-python < 0.5
+
+    - Name: devel
+      Summary: Development files for PacRunner
+      Group: Development/Libraries
+      Description: |
+          This provides the development files for building against
+          pacrunner's implementation of libproxy
+      Provides:
+          - libproxy-devel
+      Obsoletes:
+          - libproxy-devel < 0.5
+

@@ -1,3 +1,7 @@
+* Fri May 25 2012 Marko Saukko <sage@merproject.org> - 0.5
+- Fixes MER#330: update pacrunner to recent version 0.5
+- Added test package with manual-proxy-test binary.
+
 * Wed Jan 25 2012 Marko Saukko <marko.saukko@gmail.com> - 0.4
 - Update packrunner to version 0.4
 - Added .yaml for spectacle

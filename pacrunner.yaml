@@ -1,7 +1,7 @@
 Name: pacrunner
 Summary: Proxy configuration dæmon
-Version: 0.4
-Release: 3
+Version: 0.5
+Release: 1
 Group: System/Networking
 License: GPLv2
 URL: http://connman.net/
@@ -55,3 +55,8 @@ SubPackages:
       Obsoletes:
           - libproxy-devel < 0.5
 
+    - Name: test
+      Summary: Test files for PacRunner
+      Group: Development/Libraries
+      Description: |
+          This provides the test files for pacrunner

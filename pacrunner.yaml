@@ -1,6 +1,6 @@
 Name: pacrunner
 Summary: Proxy configuration dæmon
-Version: 0.5
+Version: 0.8
 Release: 1
 Group: System/Networking
 License: GPLv2
@@ -8,6 +8,7 @@ URL: http://connman.net/
 Sources:
     - http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.xz
     - libproxy.py
+    - http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.sig
 Description: |
     PacRunner provides a dæmon for processing proxy configuration
     and providing information to clients over D-Bus.

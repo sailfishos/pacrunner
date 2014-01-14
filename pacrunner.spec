@@ -8,14 +8,15 @@ Name:       pacrunner
 # >> macros
 # << macros
 
-Summary:    Proxy configuration dæmon
-Version:    0.5
+Summary:    Proxy configuration daemon
+Version:    0.8
 Release:    1
 Group:      System/Networking
 License:    GPLv2
 URL:        http://connman.net/
 Source0:    http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.xz
 Source1:    libproxy.py
+Source2:    http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.sig
 Source100:  pacrunner.yaml
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
@@ -29,7 +30,7 @@ Provides:   libproxy
 Obsoletes:   libproxy < 0.5
 
 %description
-PacRunner provides a dæmon for processing proxy configuration
+PacRunner provides a daemon for processing proxy configuration
 and providing information to clients over D-Bus.
 
 

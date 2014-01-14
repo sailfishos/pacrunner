@@ -1,3 +1,6 @@
+* Tue Jan 14 2014 Davide Bettio <davide.bettio@ispirata.com> - 0.8
+- Upgrade to version 0.8
+
 * Fri May 25 2012 Marko Saukko <sage@merproject.org> - 0.5
 - Fixes MER#330: update pacrunner to recent version 0.5
 - Added test package with manual-proxy-test binary.

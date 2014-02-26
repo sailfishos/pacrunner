@@ -8,7 +8,7 @@ URL: http://connman.net/
 Sources:
     - http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.xz
     - libproxy.py
-    - http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.sig
+    - http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.sign
 Description: |
     PacRunner provides a dæmon for processing proxy configuration
     and providing information to clients over D-Bus.

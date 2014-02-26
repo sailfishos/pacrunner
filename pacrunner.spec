@@ -16,7 +16,7 @@ License:    GPLv2
 URL:        http://connman.net/
 Source0:    http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.xz
 Source1:    libproxy.py
-Source2:    http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.sig
+Source2:    http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.sign
 Source100:  pacrunner.yaml
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig

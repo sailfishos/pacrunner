@@ -18,6 +18,8 @@ Source0:    http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}
 Source1:    libproxy.py
 Source2:    http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.sign
 Source100:  pacrunner.yaml
+Patch0:     pacrunner-0.8-plugins-Do-not-try-to-resolve.patch
+Patch1:     pacrunner-0.8-plugins-Update-v8-plugin-to-the-newest-API.patch
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 BuildRequires:  pkgconfig(glib-2.0)
@@ -70,6 +72,10 @@ This provides the test files for pacrunner
 %prep
 %setup -q -n %{name}-%{version}
 
+# pacrunner-0.8-plugins-Do-not-try-to-resolve.patch
+%patch0 -p1
+# pacrunner-0.8-plugins-Update-v8-plugin-to-the-newest-API.patch
+%patch1 -p1
 # >> setup
 # << setup
 

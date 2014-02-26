@@ -9,6 +9,9 @@ Sources:
     - http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.xz
     - libproxy.py
     - http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.sign
+Patches:
+    - pacrunner-0.8-plugins-Do-not-try-to-resolve.patch
+    - pacrunner-0.8-plugins-Update-v8-plugin-to-the-newest-API.patch
 Description: |
     PacRunner provides a dæmon for processing proxy configuration
     and providing information to clients over D-Bus.

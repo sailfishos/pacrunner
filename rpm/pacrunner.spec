@@ -8,8 +8,6 @@ License:    GPLv2
 URL:        http://connman.net/
 Source0:    http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.xz
 Source1:    libproxy.py
-Source2:    http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.sign
-Patch0:     pacrunner-0.8-plugins-Do-not-try-to-resolve.patch
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 BuildRequires:  pkgconfig(glib-2.0)
@@ -59,9 +57,6 @@ This provides the test files for pacrunner
 
 %prep
 %setup -q -n %{name}-%{version}/%{name}
-
-# pacrunner-0.8-plugins-Do-not-try-to-resolve.patch
-%patch0 -p1
 
 %build
 ./bootstrap

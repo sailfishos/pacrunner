@@ -1,0 +1,29 @@
+* Wed Feb 26 2014 Oleg Girko <oleg.girko@jolla.com> - 0.8
+- Add patch to not try to resolve a wrongly formated hostname
+- Add patch to update v8 plugin to the newest API.
+
+* Tue Feb 25 2014 Oleg Girko <oleg.girko@jolla.com> - 0.8
+- Fix signature filename
+
+* Tue Jan 14 2014 Davide Bettio <davide.bettio@ispirata.com> - 0.8
+- Upgrade to version 0.8
+
+* Fri May 25 2012 Marko Saukko <sage@merproject.org> - 0.5
+- Fixes MER#330: update pacrunner to recent version 0.5
+- Added test package with manual-proxy-test binary.
+
+* Wed Jan 25 2012 Marko Saukko <marko.saukko@gmail.com> - 0.4
+- Update packrunner to version 0.4
+- Added .yaml for spectacle
+
+* Mon Jun 20 2011 Yu <yu.a.wang@intel.com> - 0.3
+- Upgrade to version 0.3
+
+* Fri Apr 29 2011 Junfeng Dong <junfeng.dong@intel.com> - 0.2
+- Fix the error caused by updating libtool.
+
+* Thu Mar 10 2011 Yu <yu.a.wang@intel.com> - 0.2
+- Make a new sub package python for pacrunner, fixe pacrunner requires python BMC#13676
+
+* Thu Jan 13 2011 Martin Xu <martin.xu@intel.com> - 0.2
+- upgrade to 0.2 for FEA #11007

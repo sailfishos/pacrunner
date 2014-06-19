@@ -12,7 +12,6 @@ Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(dbus-1)
-BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  python
 BuildRequires:  pkgconfig(gthread-2.0)
 Provides:   libproxy
@@ -54,6 +53,12 @@ Requires:   %{name} = %{version}-%{release}
 %description test
 This provides the test files for pacrunner
 
+%package plugin-devel
+Summary:    Development files to develop PacRunner plugins
+Group:      Development/Libraries
+Requires:   %{name} = %{version}-%{release}
+%description plugin-devel
+%{summary}
 
 %prep
 %setup -q -n %{name}-%{version}/%{name}
@@ -63,10 +68,9 @@ This provides the test files for pacrunner
 
 %configure --disable-static \
     --enable-libproxy \
-    --enable-curl \
     --disable-capng \
+    --enable-plugindevel \
     --enable-datafiles 
-#    --enable-v8
 
 make %{?jobs:-j%jobs}
 
@@ -107,3 +111,9 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libproxy.la
 %files test
 %defattr(-,root,root,-)
 %{_bindir}/manual-proxy-test
+
+%files plugin-devel
+%defattr(-,root,root,-)
+%{_includedir}/pacrunner/js.h
+%{_includedir}/pacrunner/plugin.h
+%{_libdir}/pkgconfig/pacrunner-1.0.pc

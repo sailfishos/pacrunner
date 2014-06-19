@@ -12,6 +12,7 @@ Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(dbus-1)
+BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  python
 BuildRequires:  pkgconfig(gthread-2.0)
 BuildRequires:  libtool
@@ -69,7 +70,7 @@ Requires:   %{name} = %{version}-%{release}
 
 %configure --disable-static \
     --enable-libproxy \
-    --disable-capng \
+    --enable-curl \
     --enable-plugindevel \
     --enable-datafiles 
 

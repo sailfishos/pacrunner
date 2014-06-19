@@ -14,6 +14,7 @@ BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(dbus-1)
 BuildRequires:  python
 BuildRequires:  pkgconfig(gthread-2.0)
+BuildRequires:  libtool
 Provides:   libproxy
 Obsoletes:   libproxy < 0.5
 

@@ -71,7 +71,6 @@ Requires:   %{name} = %{version}-%{release}
 %configure --disable-static \
     --enable-libproxy \
     --enable-curl \
-    --disable-capng \
     --enable-plugindevel \
     --enable-datafiles 
 

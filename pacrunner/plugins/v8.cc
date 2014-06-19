@@ -324,4 +324,4 @@ static void v8_exit(void)
 		;
 }
 
-PACRUNNER_PLUGIN_DEFINE(v8, v8_init, v8_exit)
+PACRUNNER_BUILTIN_PLUGIN_DEFINE(v8, v8_init, v8_exit)

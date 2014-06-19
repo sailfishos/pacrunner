@@ -286,4 +286,4 @@ static void mozjs_exit(void)
 	JS_DestroyRuntime(jsrun);
 }
 
-PACRUNNER_PLUGIN_DEFINE(mozjs, mozjs_init, mozjs_exit)
+PACRUNNER_BUILTIN_PLUGIN_DEFINE(mozjs, mozjs_init, mozjs_exit)

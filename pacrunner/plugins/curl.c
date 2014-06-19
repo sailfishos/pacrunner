@@ -345,4 +345,4 @@ static void curl_exit(void)
 	curl_multi_cleanup(multi);
 }
 
-PACRUNNER_PLUGIN_DEFINE(curl, curl_init, curl_exit)
+PACRUNNER_BUILTIN_PLUGIN_DEFINE(curl, curl_init, curl_exit)

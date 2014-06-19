@@ -25,11 +25,13 @@ struct pacrunner_plugin_desc {
 	void (*exit) (void);
 };
 
-#ifdef PACRUNNER_PLUGIN_BUILTIN
-#define PACRUNNER_PLUGIN_DEFINE(name, init, exit) \
+#define PACRUNNER_BUILTIN_PLUGIN_DEFINE(name, init, exit) \
 		struct pacrunner_plugin_desc __pacrunner_builtin_ ## name = { \
 			#name, init, exit \
 		};
+
+#ifdef PACRUNNER_PLUGIN_BUILTIN
+#define PACRUNNER_PLUGIN_DEFINE PACRUNNER_BUILTIN_PLUGIN_DEFINE
 #else
 #define PACRUNNER_PLUGIN_DEFINE(name, init, exit) \
 		extern struct pacrunner_plugin_desc pacrunner_plugin_desc \

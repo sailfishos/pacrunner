@@ -1,3 +1,6 @@
+* Wed Jun 25 2014 Oleg Girko <oleg.girko@jolla.com> - 0.8
+- Fix patch to update v8 plugin to the newest API.
+
 * Wed Feb 26 2014 Oleg Girko <oleg.girko@jolla.com> - 0.8
 - Add patch to not try to resolve a wrongly formated hostname
 - Add patch to update v8 plugin to the newest API.

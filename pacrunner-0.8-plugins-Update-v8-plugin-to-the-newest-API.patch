@@ -1,4 +1,4 @@
-From 7700852ba42e7f47570b9a24c4095e0fb015b2ed Mon Sep 17 00:00:00 2001
+From bd37a43a85747928a7b50b9ba9670f96b5e35f81 Mon Sep 17 00:00:00 2001
 From: Oleg Girko <oleg.girko@jolla.com>
 Date: Wed, 26 Feb 2014 02:33:40 +0000
 Subject: [PATCH] plugins: Update v8 plugin to the newest API.
@@ -7,31 +7,36 @@ This change updates v8 plugin to the newest API used in v8 3.25.1.
 
 Signed-off-by: Oleg Girko <oleg.girko@jolla.com>
 ---
- plugins/v8.cc | 115 +++++++++++++++++++++++++++++++++-------------------------
- 1 file changed, 65 insertions(+), 50 deletions(-)
+ plugins/v8.cc | 122 ++++++++++++++++++++++++++++++++--------------------------
+ 1 file changed, 68 insertions(+), 54 deletions(-)
 
 diff --git a/plugins/v8.cc b/plugins/v8.cc
-index 6cb28ca..60aaae6 100644
+index 6cb28ca..011f216 100644
 --- a/plugins/v8.cc
 +++ b/plugins/v8.cc
-@@ -48,7 +48,8 @@ static guint gc_source = 0;
+@@ -42,13 +42,14 @@ extern "C" {
+ };
+ 
+ static struct pacrunner_proxy *current_proxy = NULL;
++static v8::Isolate *isolate = NULL;
+ static v8::Persistent<v8::Context> jsctx;
+ static v8::Persistent<v8::Function> jsfn;
+ static guint gc_source = 0;
  
  static gboolean v8_gc(gpointer user_data)
  {
 -	v8::Locker lck;
-+	v8::Isolate *isolate = v8::Isolate::GetCurrent();
 +	v8::Locker lck(isolate);
  	return !v8::V8::IdleNotification();
  }
  
-@@ -97,36 +98,47 @@ static int resolve(const char *node, char *host, size_t hostlen)
+@@ -97,36 +98,45 @@ static int resolve(const char *node, char *host, size_t hostlen)
  	return 0;
  }
  
 -static v8::Handle<v8::Value> myipaddress(const v8::Arguments& args)
 +static void myipaddress(const v8::FunctionCallbackInfo<v8::Value>& info)
  {
-+	v8::Isolate *isolate = info.GetIsolate();
  	const char *interface;
  	char address[NI_MAXHOST];
  
@@ -69,7 +74,6 @@ index 6cb28ca..60aaae6 100644
 -static v8::Handle<v8::Value> dnsresolve(const v8::Arguments& args)
 +static void dnsresolve(const v8::FunctionCallbackInfo<v8::Value>& info)
  {
-+	v8::Isolate *isolate = info.GetIsolate();
  	char address[NI_MAXHOST];
 -	v8::String::Utf8Value host(args[0]);
 +	v8::String::Utf8Value host(info[0]);
@@ -84,7 +88,7 @@ index 6cb28ca..60aaae6 100644
  
  	DBG("host %s", *host);
  
-@@ -137,21 +149,26 @@ static v8::Handle<v8::Value> dnsresolve(const v8::Arguments& args)
+@@ -137,17 +147,20 @@ static v8::Handle<v8::Value> dnsresolve(const v8::Arguments& args)
  		g_strfreev(split_res);
  
  		if (length > 1) {
@@ -110,19 +114,14 @@ index 6cb28ca..60aaae6 100644
  }
  
  static void create_object(void)
- {
-+	v8::Isolate *isolate = v8::Isolate::GetCurrent();
-+
- 	if (!current_proxy)
- 		return;
- 
-@@ -160,79 +177,76 @@ static void create_object(void)
+@@ -160,79 +173,76 @@ static void create_object(void)
  		printf("no script\n");
  		return;
  	}
 -	v8::HandleScope handle_scope;
+-	v8::Handle<v8::ObjectTemplate> global = v8::ObjectTemplate::New();
 +	v8::HandleScope handle_scope(isolate);
- 	v8::Handle<v8::ObjectTemplate> global = v8::ObjectTemplate::New();
++	v8::Handle<v8::ObjectTemplate> global = v8::ObjectTemplate::New(isolate);
  
 -	global->Set(v8::String::New("myIpAddress"),
 -		    v8::FunctionTemplate::New(myipaddress));
@@ -152,7 +151,8 @@ index 6cb28ca..60aaae6 100644
  		return;
  	}
  	result = script_scr->Run();
- 	if (exc.HasCaught()) {
+-	if (exc.HasCaught()) {
++	if (result.IsEmpty()) {
  		v8::String::Utf8Value err(exc.Exception());
  		DBG("Javascript library failed: %s", *err);
 -		jsctx.Dispose();
@@ -170,7 +170,8 @@ index 6cb28ca..60aaae6 100644
  		return;
  	}
  	result = script_scr->Run();
- 	if (exc.HasCaught()) {
+-	if (exc.HasCaught()) {
++	if (result.IsEmpty()) {
  		v8::String::Utf8Value err(exc.Exception());
  		DBG("PAC script failed: %s", *err);
 -		jsctx.Dispose();
@@ -214,18 +215,18 @@ index 6cb28ca..60aaae6 100644
  static int v8_set_proxy(struct pacrunner_proxy *proxy)
  {
 -	v8::Locker lck;
-+	v8::Isolate *isolate = v8::Isolate::GetCurrent();
 +	v8::Locker lck(isolate);
++	v8::Isolate::Scope isolate_scope(isolate);
  
  	DBG("proxy %p", proxy);
  
-@@ -253,25 +267,26 @@ static int v8_set_proxy(struct pacrunner_proxy *proxy)
+@@ -253,26 +263,27 @@ static int v8_set_proxy(struct pacrunner_proxy *proxy)
  
  static char *v8_execute(const char *url, const char *host)
  {
 -	v8::Locker lck;
-+	v8::Isolate *isolate = v8::Isolate::GetCurrent();
 +	v8::Locker lck(isolate);
++	v8::Isolate::Scope isolate_scope(isolate);
  
  	DBG("url %s host %s", url, host);
  
@@ -248,10 +249,22 @@ index 6cb28ca..60aaae6 100644
  	v8::TryCatch exc;
  
 -	result = jsfn->Call(jsctx->Global(), 2, args);
+-	if (exc.HasCaught()) {
 +	result = v8::Local<v8::Function>::New(isolate, jsfn)->Call(v8::Local<v8::Context>::New(isolate, jsctx)->Global(), 2, args);
- 	if (exc.HasCaught()) {
++	if (result.IsEmpty()) {
  		v8::Handle<v8::Message> msg = exc.Message();
  		int line = msg->GetLineNumber();
+ 		v8::String::Utf8Value err(msg->Get());
+@@ -305,6 +316,9 @@ static int v8_init(void)
+ {
+ 	DBG("");
+ 
++	if (!isolate)
++		isolate = v8::Isolate::New();
++
+ 	return pacrunner_js_driver_register(&v8_driver);
+ }
+ 
 -- 
-1.8.5.3
+1.9.3
 

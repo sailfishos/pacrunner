@@ -1,7 +1,7 @@
 Name:       pacrunner
 
 Summary:    Proxy configuration daemon
-Version:    0.8.2
+Version:    0.9
 Release:    1
 Group:      System/Networking
 License:    GPLv2

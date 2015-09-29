@@ -98,8 +98,11 @@ static DBusMessage *find_proxy_for_url(DBusConnection *conn,
 
 	pthread_attr_init(&attrs);
 	pthread_attr_setdetachstate(&attrs, PTHREAD_CREATE_DETACHED);
+
 	err = pthread_create(&jsrun->thread, &attrs, jsrun_thread, jsrun);
+
 	pthread_attr_destroy(&attrs);
+
 	if (err != 0) {
 		jsrun_free(jsrun);
 		return g_dbus_create_error(msg,

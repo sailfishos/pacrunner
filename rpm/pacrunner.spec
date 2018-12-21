@@ -81,6 +81,7 @@ rm -rf %{buildroot}
 %make_install
 
 mv $RPM_BUILD_ROOT/%{_datadir}/dbus-1/system-services/{,org.}pacrunner.service
+mv $RPM_BUILD_ROOT/lib/systemd/system/dbus-{,org.}pacrunner.service
 mkdir -p ${RPM_BUILD_ROOT}/%{python_sitelib}
 install -m0644 %{SOURCE1} $RPM_BUILD_ROOT/%{python_sitelib}/libproxy.py
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libproxy.la
@@ -98,6 +99,7 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libproxy.la
 %{_libdir}/libproxy.so.1
 %{_bindir}/proxy
 %{_datadir}/dbus-1/system-services/org.pacrunner.service
+/lib/systemd/system/dbus-org.pacrunner.service
 %config %{_sysconfdir}/dbus-1/system.d/pacrunner.conf
 
 %files python

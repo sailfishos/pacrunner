@@ -1,0 +1,8 @@
+[Unit]
+Name=Pacrunner service
+
+[Service]
+Type=dbus
+BusName=org.pacrunner
+ExecStart=@prefix@/sbin/pacrunner
+

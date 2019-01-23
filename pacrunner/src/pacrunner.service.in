@@ -1,5 +1,0 @@
-[D-BUS Service]
-Name=org.pacrunner
-Exec=/bin/false
-User=root
-SystemdService=dbus-org.pacrunner.service

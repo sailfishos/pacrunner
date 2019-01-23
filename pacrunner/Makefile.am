@@ -9,6 +9,10 @@ dbusconf_DATA = src/pacrunner.conf
 dbusdatadir = @DBUS_DATADIR@
 
 dbusdata_DATA = src/pacrunner.service
+
+systemdunitdir = @SYSTEMD_UNITDIR@
+
+systemdunit_DATA = src/dbus-pacrunner.service
 endif
 
 gdbus_sources = gdbus/gdbus.h gdbus/mainloop.c gdbus/watch.c \

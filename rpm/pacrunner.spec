@@ -4,7 +4,7 @@ Summary:    Proxy configuration daemon
 Version:    0.9
 Release:    1
 Group:      System/Networking
-License:    GPLv2
+License:    GPLv2+
 URL:        http://connman.net/
 Source0:    http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.xz
 Source1:    libproxy.py
@@ -22,7 +22,6 @@ Obsoletes:   libproxy < 0.5
 %description
 PacRunner provides a daemon for processing proxy configuration
 and providing information to clients over D-Bus.
-
 
 %package python
 Summary:    Python lib for PacRunner
@@ -45,7 +44,6 @@ Obsoletes:   libproxy-devel < 0.5
 %description devel
 This provides the development files for building against
 pacrunner's implementation of libproxy
-#'
 
 %package test
 Summary:    Test files for PacRunner
@@ -59,8 +57,17 @@ This provides the test files for pacrunner
 Summary:    Development files to develop PacRunner plugins
 Group:      Development/Libraries
 Requires:   %{name} = %{version}-%{release}
+
 %description plugin-devel
 %{summary}
+
+%package doc
+Summary:    Documentation for %{name}
+Group:      Documentation
+Requires:   %{name} = %{version}-%{release}
+
+%description doc
+%{summary}.
 
 %prep
 %setup -q -n %{name}-%{version}/%{name}
@@ -74,17 +81,21 @@ Requires:   %{name} = %{version}-%{release}
     --enable-plugindevel \
     --enable-datafiles 
 
-make %{?jobs:-j%jobs}
+make %{?_smp_mflags}
 
 %install
 rm -rf %{buildroot}
 %make_install
 
 mv $RPM_BUILD_ROOT/%{_datadir}/dbus-1/system-services/{,org.}pacrunner.service
+mv $RPM_BUILD_ROOT/lib/systemd/system/dbus-{,org.}pacrunner.service
 mkdir -p ${RPM_BUILD_ROOT}/%{python_sitelib}
 install -m0644 %{SOURCE1} $RPM_BUILD_ROOT/%{python_sitelib}/libproxy.py
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libproxy.la
 
+mkdir -p $RPM_BUILD_ROOT/%{_docdir}/%{name}-%{version}
+install -m0644 -t $RPM_BUILD_ROOT/%{_docdir}/%{name}-%{version} \
+        README AUTHORS ChangeLog
 
 %post -p /sbin/ldconfig
 
@@ -92,12 +103,13 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libproxy.la
 
 %files
 %defattr(-,root,root,-)
-%doc COPYING README COPYING.LIB AUTHORS ChangeLog
+%license COPYING COPYING.LIB
 %{_sbindir}/pacrunner
 %{_libdir}/libproxy.so.1.0.0
 %{_libdir}/libproxy.so.1
 %{_bindir}/proxy
 %{_datadir}/dbus-1/system-services/org.pacrunner.service
+/lib/systemd/system/dbus-org.pacrunner.service
 %config %{_sysconfdir}/dbus-1/system.d/pacrunner.conf
 
 %files python
@@ -116,6 +128,9 @@ rm -f $RPM_BUILD_ROOT/%{_libdir}/libproxy.la
 
 %files plugin-devel
 %defattr(-,root,root,-)
-%{_includedir}/pacrunner/js.h
-%{_includedir}/pacrunner/plugin.h
+%{_includedir}/pacrunner
 %{_libdir}/pkgconfig/pacrunner-1.0.pc
+
+%files doc
+%defattr(-,root,root)
+%{_docdir}/%{name}-%{version}

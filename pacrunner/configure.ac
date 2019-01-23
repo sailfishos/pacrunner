@@ -120,6 +120,16 @@ else
 fi
 AC_SUBST(DBUS_DATADIR)
 
+AC_ARG_WITH(systemdunitdir, AC_HELP_STRING([--with-systemdunitdir=PATH],
+	[path to systemd unit directory]), [path_systemdunit=${withval}],
+		[path_systemdunit="`$PKG_CONFIG systemd --variable=systemdsystemunitdir`"])
+if (test -z "${path_systemdunit}"); then
+	SYSTEMD_UNITDIR="/lib/systemd/system"
+else
+	SYSTEMD_UNITDIR="${path_systemdunit}"
+fi
+AC_SUBST(SYSTEMD_UNITDIR)
+
 AC_CHECK_LIB(pthread, pthread_create,
 	[PTHREAD_LIBS="-lpthread"],
 	[AC_MSG_ERROR([Pthread support is missing])])
@@ -152,4 +162,4 @@ AC_ARG_ENABLE(plugindevel, AC_HELP_STRING([--enable-plugindevel],
 	[enable plugin development]), [enable_plugindevel=${enableval}])
 AM_CONDITIONAL(PLUGINDEVEL, test "${enable_plugindevel}" = "yes")
 
-AC_OUTPUT(Makefile src/pacrunner.service libproxy/libproxy-1.0.pc src/pacrunner-1.0.pc)
+AC_OUTPUT(Makefile src/pacrunner.service src/dbus-pacrunner.service libproxy/libproxy-1.0.pc src/pacrunner-1.0.pc)

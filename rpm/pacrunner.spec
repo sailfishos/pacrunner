@@ -1,7 +1,7 @@
 Name:       pacrunner
 
 Summary:    Proxy configuration daemon
-Version:    0.9
+Version:    0.15
 Release:    1
 Group:      System/Networking
 License:    GPLv2+
@@ -18,6 +18,10 @@ BuildRequires:  pkgconfig(gthread-2.0)
 BuildRequires:  libtool
 Provides:   libproxy
 Obsoletes:   libproxy < 0.5
+Conflicts:   pacrunner-cutes
+Obsoletes:   pacrunner-cutes
+
+Patch1: 0001-Use-systemd-activation-for-dbus.-Contributes-to-JB-2.patch
 
 %description
 PacRunner provides a daemon for processing proxy configuration
@@ -53,13 +57,6 @@ Requires:   %{name} = %{version}-%{release}
 %description test
 This provides the test files for pacrunner
 
-%package plugin-devel
-Summary:    Development files to develop PacRunner plugins
-Group:      Development/Libraries
-Requires:   %{name} = %{version}-%{release}
-
-%description plugin-devel
-%{summary}
 
 %package doc
 Summary:    Documentation for %{name}
@@ -70,7 +67,8 @@ Requires:   %{name} = %{version}-%{release}
 %{summary}.
 
 %prep
-%setup -q -n %{name}-%{version}/%{name}
+%setup -q -n %{name}-%{version}/upstream
+%patch1 -p1
 
 %build
 ./bootstrap
@@ -78,8 +76,8 @@ Requires:   %{name} = %{version}-%{release}
 %configure --disable-static \
     --enable-libproxy \
     --enable-curl \
-    --enable-plugindevel \
-    --enable-datafiles 
+    --enable-datafiles \
+    --enable-duktape
 
 make %{?_smp_mflags}
 
@@ -87,8 +85,6 @@ make %{?_smp_mflags}
 rm -rf %{buildroot}
 %make_install
 
-mv $RPM_BUILD_ROOT/%{_datadir}/dbus-1/system-services/{,org.}pacrunner.service
-mv $RPM_BUILD_ROOT/lib/systemd/system/dbus-{,org.}pacrunner.service
 mkdir -p ${RPM_BUILD_ROOT}/%{python_sitelib}
 install -m0644 %{SOURCE1} $RPM_BUILD_ROOT/%{python_sitelib}/libproxy.py
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libproxy.la
@@ -125,11 +121,6 @@ install -m0644 -t $RPM_BUILD_ROOT/%{_docdir}/%{name}-%{version} \
 %files test
 %defattr(-,root,root,-)
 %{_bindir}/manual-proxy-test
-
-%files plugin-devel
-%defattr(-,root,root,-)
-%{_includedir}/pacrunner
-%{_libdir}/pkgconfig/pacrunner-1.0.pc
 
 %files doc
 %defattr(-,root,root)

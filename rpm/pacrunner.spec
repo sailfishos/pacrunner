@@ -77,8 +77,8 @@ Requires:   %{name} = %{version}-%{release}
     --enable-libproxy \
     --enable-curl \
     --enable-datafiles \
-    --enable-duktape
-
+    --enable-duktape \
+    --with-systemdunitdir=%{_prefix}/lib/systemd/system
 make %{?_smp_mflags}
 
 %install
@@ -105,7 +105,7 @@ install -m0644 -t $RPM_BUILD_ROOT/%{_docdir}/%{name}-%{version} \
 %{_libdir}/libproxy.so.1
 %{_bindir}/proxy
 %{_datadir}/dbus-1/system-services/org.pacrunner.service
-/lib/systemd/system/dbus-org.pacrunner.service
+%{_libdir}/systemd/system/dbus-org.pacrunner.service
 %config %{_sysconfdir}/dbus-1/system.d/pacrunner.conf
 
 %files python

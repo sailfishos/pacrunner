@@ -60,7 +60,7 @@ new file mode 100644
 index 0000000..9c87f89
 --- /dev/null
 +++ b/src/dbus-org.pacrunner.service.in
-@@ -0,0 +1,8 @@
+@@ -0,0 +1,13 @@
 +[Unit]
 +Description=Pacrunner service
 +
@@ -68,17 +68,23 @@ index 0000000..9c87f89
 +Type=dbus
 +BusName=org.pacrunner
 +ExecStart=@prefix@/sbin/pacrunner -n
-+
++# Sandboxing
++CapabilityBoundingSet=CAP_NET_RAW
++PrivateDevices=true
++PrivateTmp=yes
++ProtectHome=yes
++ProtectSystem=full
 diff --git a/src/org.pacrunner.service.in b/src/org.pacrunner.service.in
 index eafd39d..01f9ef4 100644
 --- a/src/org.pacrunner.service.in
 +++ b/src/org.pacrunner.service.in
-@@ -2,3 +2,4 @@
+@@ -1,4 +1,5 @@
+ [D-BUS Service]
  Name=org.pacrunner
- Exec=@prefix@/sbin/pacrunner
+-Exec=@prefix@/sbin/pacrunner
++Exec=/bin/false
  User=root
 +SystemdService=dbus-org.pacrunner.service
-\ No newline at end of file
 -- 
 2.20.1
 

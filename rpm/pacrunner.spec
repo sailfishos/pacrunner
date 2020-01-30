@@ -13,7 +13,6 @@ Requires(postun): /sbin/ldconfig
 BuildRequires:  pkgconfig(glib-2.0)
 BuildRequires:  pkgconfig(dbus-1)
 BuildRequires:  pkgconfig(libcurl)
-BuildRequires:  python
 BuildRequires:  pkgconfig(gthread-2.0)
 BuildRequires:  libtool
 Provides:   libproxy

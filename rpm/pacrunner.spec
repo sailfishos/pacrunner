@@ -7,7 +7,6 @@ Group:      System/Networking
 License:    GPLv2+
 URL:        http://connman.net/
 Source0:    http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.xz
-Source1:    libproxy.py
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
 BuildRequires:  pkgconfig(glib-2.0)
@@ -25,17 +24,6 @@ Patch1: 0001-Use-systemd-activation-for-dbus.-Contributes-to-JB-2.patch
 %description
 PacRunner provides a daemon for processing proxy configuration
 and providing information to clients over D-Bus.
-
-%package python
-Summary:    Python lib for PacRunner
-Group:      Development/Libraries
-Requires:   %{name} = %{version}-%{release}
-Requires:   pacrunner
-Provides:   libproxy-python
-Obsoletes:   libproxy-python < 0.5
-
-%description python
-A python library for proxy configuration and autodetection
 
 %package devel
 Summary:    Development files for PacRunner
@@ -84,8 +72,6 @@ make %{?_smp_mflags}
 rm -rf %{buildroot}
 %make_install
 
-mkdir -p ${RPM_BUILD_ROOT}/%{python_sitelib}
-install -m0644 %{SOURCE1} $RPM_BUILD_ROOT/%{python_sitelib}/libproxy.py
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libproxy.la
 
 mkdir -p $RPM_BUILD_ROOT/%{_docdir}/%{name}-%{version}
@@ -106,10 +92,6 @@ install -m0644 -t $RPM_BUILD_ROOT/%{_docdir}/%{name}-%{version} \
 %{_datadir}/dbus-1/system-services/org.pacrunner.service
 /lib/systemd/system/dbus-org.pacrunner.service
 %config %{_sysconfdir}/dbus-1/system.d/pacrunner.conf
-
-%files python
-%defattr(-,root,root,-)
-%{python_sitelib}/libproxy.py*
 
 %files devel
 %defattr(-,root,root,-)

@@ -3,9 +3,8 @@ Name:       pacrunner
 Summary:    Proxy configuration daemon
 Version:    0.15
 Release:    1
-Group:      System/Networking
 License:    GPLv2+
-URL:        http://connman.net/
+URL:        https://git.sailfishos.org/mer-core/pacrunner/
 Source0:    http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.xz
 Requires(post): /sbin/ldconfig
 Requires(postun): /sbin/ldconfig
@@ -27,7 +26,6 @@ and providing information to clients over D-Bus.
 
 %package devel
 Summary:    Development files for PacRunner
-Group:      Development/Libraries
 Requires:   %{name} = %{version}-%{release}
 Provides:   libproxy-devel
 Obsoletes:   libproxy-devel < 0.5
@@ -38,7 +36,6 @@ pacrunner's implementation of libproxy
 
 %package test
 Summary:    Test files for PacRunner
-Group:      Development/Libraries
 Requires:   %{name} = %{version}-%{release}
 
 %description test
@@ -47,7 +44,6 @@ This provides the test files for pacrunner
 
 %package doc
 Summary:    Documentation for %{name}
-Group:      Documentation
 Requires:   %{name} = %{version}-%{release}
 
 %description doc

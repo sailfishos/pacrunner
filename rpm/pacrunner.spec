@@ -21,6 +21,10 @@ Obsoletes:   pacrunner-cutes
 
 Patch1: 0001-Use-systemd-activation-for-dbus.-Contributes-to-JB-2.patch
 
+# To avoid python-devel dependency,
+# python2 will not have major updates anymore anyway
+%define python_sitelib /usr/lib/python2.7/site-packages
+
 %description
 PacRunner provides a daemon for processing proxy configuration
 and providing information to clients over D-Bus.

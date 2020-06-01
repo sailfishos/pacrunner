@@ -107,8 +107,7 @@ install -m0644 -t $RPM_BUILD_ROOT/%{_docdir}/%{name}-%{version} \
 %files python
 %defattr(-,root,root,-)
 %{python3_sitelib}/libproxy.py*
-%{python3_sitelib}/__pycache__/libproxy.cpython-38.opt-1.pyc
-%{python3_sitelib}/__pycache__/libproxy.cpython-38.pyc
+%{python3_sitelib}/__pycache__/libproxy.*
 
 %files devel
 %defattr(-,root,root,-)

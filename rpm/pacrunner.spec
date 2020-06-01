@@ -14,16 +14,13 @@ BuildRequires:  pkgconfig(dbus-1)
 BuildRequires:  pkgconfig(libcurl)
 BuildRequires:  pkgconfig(gthread-2.0)
 BuildRequires:  libtool
+BuildRequires:  python3-devel
 Provides:   libproxy
 Obsoletes:   libproxy < 0.5
 Conflicts:   pacrunner-cutes
 Obsoletes:   pacrunner-cutes
 
 Patch1: 0001-Use-systemd-activation-for-dbus.-Contributes-to-JB-2.patch
-
-# To avoid python-devel dependency,
-# python2 will not have major updates anymore anyway
-%define python_sitelib /usr/lib/python2.7/site-packages
 
 %description
 PacRunner provides a daemon for processing proxy configuration
@@ -84,8 +81,8 @@ make %{?_smp_mflags}
 rm -rf %{buildroot}
 %make_install
 
-mkdir -p ${RPM_BUILD_ROOT}/%{python_sitelib}
-install -m0644 %{SOURCE1} $RPM_BUILD_ROOT/%{python_sitelib}/libproxy.py
+mkdir -p ${RPM_BUILD_ROOT}/%{python3_sitelib}
+install -m0644 %{SOURCE1} $RPM_BUILD_ROOT/%{python3_sitelib}/libproxy.py
 rm -f $RPM_BUILD_ROOT/%{_libdir}/libproxy.la
 
 mkdir -p $RPM_BUILD_ROOT/%{_docdir}/%{name}-%{version}
@@ -109,7 +106,9 @@ install -m0644 -t $RPM_BUILD_ROOT/%{_docdir}/%{name}-%{version} \
 
 %files python
 %defattr(-,root,root,-)
-%{python_sitelib}/libproxy.py*
+%{python3_sitelib}/libproxy.py*
+%{python3_sitelib}/__pycache__/libproxy.cpython-38.opt-1.pyc
+%{python3_sitelib}/__pycache__/libproxy.cpython-38.pyc
 
 %files devel
 %defattr(-,root,root,-)

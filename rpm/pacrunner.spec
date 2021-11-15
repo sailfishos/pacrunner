@@ -1,10 +1,10 @@
 Name:       pacrunner
 
 Summary:    Proxy configuration daemon
-Version:    0.15
+Version:    0.18
 Release:    1
 License:    GPLv2+
-URL:        https://git.sailfishos.org/mer-core/pacrunner/
+URL:        https://github.com/sailfishos/pacrunner/
 Source0:    http://www.kernel.org/pub/linux/network/connman/pacrunner-%{version}.tar.xz
 Source1:    libproxy.py
 Requires(post): /sbin/ldconfig
@@ -17,8 +17,6 @@ BuildRequires:  libtool
 BuildRequires:  python3-devel
 Provides:   libproxy
 Obsoletes:   libproxy < 0.5
-Conflicts:   pacrunner-cutes
-Obsoletes:   pacrunner-cutes
 
 Patch1: 0001-Use-systemd-activation-for-dbus.-Contributes-to-JB-2.patch
 
@@ -28,7 +26,6 @@ and providing information to clients over D-Bus.
 
 %package python
 Summary:    Python lib for PacRunner
-Group:      Development/Libraries
 Requires:   %{name} = %{version}-%{release}
 Requires:   pacrunner
 Provides:   libproxy-python

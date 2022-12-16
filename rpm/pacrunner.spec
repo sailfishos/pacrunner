@@ -18,7 +18,7 @@ BuildRequires:  python3-devel
 Provides:   libproxy
 Obsoletes:   libproxy < 0.5
 
-Patch1: 0001-Use-systemd-activation-for-dbus.-Contributes-to-JB-2.patch
+Patch0: 0000-Use-systemd-activation-for-dbus.-Contributes-to-JB-2.patch
 
 %description
 PacRunner provides a daemon for processing proxy configuration
@@ -60,8 +60,7 @@ Requires:   %{name} = %{version}-%{release}
 %{summary}.
 
 %prep
-%setup -q -n %{name}-%{version}/upstream
-%patch1 -p1
+%autosetup -p1 -n %{name}-%{version}/upstream
 
 %build
 ./bootstrap

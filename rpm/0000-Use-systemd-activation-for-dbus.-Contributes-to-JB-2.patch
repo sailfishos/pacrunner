@@ -1,4 +1,4 @@
-From 60dfc0a48a3a3fead7ebccaf50d62ea03fe64403 Mon Sep 17 00:00:00 2001
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: Pekka Vuorela <pekka.vuorela@jolla.com>
 Date: Wed, 23 Jan 2019 16:25:10 +0200
 Subject: [PATCH] Use systemd activation for dbus. Contributes to JB#24120
@@ -8,13 +8,13 @@ Add SystemdService to dbus service.
 ---
  Makefile.am                       |  4 ++++
  configure.ac                      | 12 +++++++++++-
- src/dbus-org.pacrunner.service.in |  8 ++++++++
- src/org.pacrunner.service.in      |  1 +
- 4 files changed, 24 insertions(+), 1 deletion(-)
+ src/dbus-org.pacrunner.service.in | 13 +++++++++++++
+ src/org.pacrunner.service.in      |  3 ++-
+ 4 files changed, 30 insertions(+), 2 deletions(-)
  create mode 100644 src/dbus-org.pacrunner.service.in
 
 diff --git a/Makefile.am b/Makefile.am
-index 2b99595..e1121fd 100644
+index 819ababd82f8a22cbff72f6b0021dd7fc20db573..9646e27cf26d8a167519c7afdb2353cad3528827 100644
 --- a/Makefile.am
 +++ b/Makefile.am
 @@ -9,6 +9,10 @@ dbusconf_DATA = src/pacrunner.conf
@@ -29,10 +29,10 @@ index 2b99595..e1121fd 100644
  
  gdbus_sources = gdbus/gdbus.h gdbus/mainloop.c gdbus/watch.c \
 diff --git a/configure.ac b/configure.ac
-index 717dc00..d5eb8c4 100644
+index 95e2545d1b1ac8cf6e0d17489c82e8fdb411c144..6253a5460d18eedecd0157e120d4e185b4c77c59 100644
 --- a/configure.ac
 +++ b/configure.ac
-@@ -122,6 +122,16 @@ else
+@@ -102,6 +102,16 @@ else
  fi
  AC_SUBST(DBUS_DATADIR)
  
@@ -49,7 +49,7 @@ index 717dc00..d5eb8c4 100644
  AC_CHECK_LIB(pthread, pthread_create,
  	[PTHREAD_LIBS="-lpthread"],
  	[AC_MSG_ERROR([Pthread support is missing])])
-@@ -150,4 +160,4 @@ AC_ARG_ENABLE(datafiles, AC_HELP_STRING([--disable-datafiles],
+@@ -130,4 +140,4 @@ AC_ARG_ENABLE(datafiles, AC_HELP_STRING([--disable-datafiles],
  					[enable_datafiles=${enableval}])
  AM_CONDITIONAL(DATAFILES, test "${enable_datafiles}" != "no")
  
@@ -57,7 +57,7 @@ index 717dc00..d5eb8c4 100644
 +AC_OUTPUT(Makefile src/org.pacrunner.service src/dbus-org.pacrunner.service libproxy/libproxy-1.0.pc)
 diff --git a/src/dbus-org.pacrunner.service.in b/src/dbus-org.pacrunner.service.in
 new file mode 100644
-index 0000000..9c87f89
+index 0000000000000000000000000000000000000000..6bf82cc03a7eeb26512084d40e0f2ccab03a20fb
 --- /dev/null
 +++ b/src/dbus-org.pacrunner.service.in
 @@ -0,0 +1,13 @@
@@ -75,7 +75,7 @@ index 0000000..9c87f89
 +ProtectHome=yes
 +ProtectSystem=full
 diff --git a/src/org.pacrunner.service.in b/src/org.pacrunner.service.in
-index eafd39d..01f9ef4 100644
+index eafd39de86118fc968c2bcae0a4cfed6c63dd47e..a77f618750ee2136bb8c564ad018c851dfd54da7 100644
 --- a/src/org.pacrunner.service.in
 +++ b/src/org.pacrunner.service.in
 @@ -1,4 +1,5 @@
@@ -85,6 +85,3 @@ index eafd39d..01f9ef4 100644
 +Exec=/bin/false
  User=root
 +SystemdService=dbus-org.pacrunner.service
--- 
-2.20.1
-

@@ -19,6 +19,7 @@ Provides:   libproxy
 Obsoletes:   libproxy < 0.5
 
 Patch0: 0000-Use-systemd-activation-for-dbus.-Contributes-to-JB-2.patch
+Patch1: 0001-Allow-for-pacrunner-on-a-custom-D-Bus-bus.-Contribut.patch
 
 %description
 PacRunner provides a daemon for processing proxy configuration

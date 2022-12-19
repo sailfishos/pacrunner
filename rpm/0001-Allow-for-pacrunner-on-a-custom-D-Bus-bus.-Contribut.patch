@@ -1,0 +1,149 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Martin Kampas <martin.kampas@jolla.com>
+Date: Thu, 15 Dec 2022 11:00:24 +0100
+Subject: [PATCH] Allow for pacrunner on a custom D-Bus bus. Contributes to
+ JB#59552
+
+Also allow silent operation in case of no D-Bus by setting bus address
+to "null".
+---
+ libproxy/proxy.c | 90 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 89 insertions(+), 1 deletion(-)
+
+diff --git a/libproxy/proxy.c b/libproxy/proxy.c
+index 8aaa454080e2940af0718edadf3bae403da7abaf..9309389bd4d09166c8777c4242ab6ba3b4d4115d 100644
+--- a/libproxy/proxy.c
++++ b/libproxy/proxy.c
+@@ -23,21 +23,101 @@
+ #include <config.h>
+ #endif
+ 
++#include <errno.h>
++#include <stdbool.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+ #include <string.h>
++#include <unistd.h>
+ 
+ #include <dbus/dbus.h>
+ 
+ #include "proxy.h"
+ 
++static const char PACRUNNER_DBUS_BUS_ADDRESS_FILE[] = "/etc/pacrunner/dbus-bus-address";
++static const char NULL_DBUS_BUS_ADDRESS[] = "null";
++
+ struct _pxProxyFactory {
+ 	DBusConnection *conn;
+ };
+ 
++static char *configured_dbus_bus_address(void)
++{
++	FILE *file = NULL;
++	char buf[1024];
++	char *eol = NULL;
++
++	if (access(PACRUNNER_DBUS_BUS_ADDRESS_FILE, R_OK) != 0)
++		return NULL;
++
++	if ((file = fopen(PACRUNNER_DBUS_BUS_ADDRESS_FILE, "r")) == NULL) {
++		fprintf(stderr, "libproxy: File could not be read: %s: %s\n",
++				PACRUNNER_DBUS_BUS_ADDRESS_FILE, strerror(errno));
++		return NULL;
++	}
++
++	/* Skip empty lines and comments */
++	do {
++		buf[0] = '\0';
++		if (fgets(buf, sizeof(buf), file) == NULL)
++			break;
++	} while (buf[0] == '\n' || buf[0] == '#');
++
++	fclose(file);
++
++	/* Trim line break */
++	if ((eol = strchr(buf, '\n')) != NULL)
++		*eol = '\0';
++
++	/* Allow to comment out the whole content */
++	if (buf[0] == '\0')
++		return NULL;
++
++	return strdup(buf);
++}
++
++DBusConnection *configured_dbus_bus(bool *is_configured)
++{
++	DBusConnection *connection = NULL;
++	DBusError error;
++	char *address = NULL;
++
++	*is_configured = false;
++
++	address = configured_dbus_bus_address();
++	if (!address)
++		return NULL;
++
++	*is_configured = true;
++
++	if (strcasecmp(address, NULL_DBUS_BUS_ADDRESS) == 0)
++		return NULL;
++
++	dbus_error_init(&error);
++
++	connection = dbus_connection_open_private(address, &error);
++	if (!connection)
++		goto err;
++
++	if (!dbus_bus_register(connection, &error))
++		goto err;
++
++	return connection;
++
++err:
++	fprintf(stderr, "libproxy: Configured D-Bus connection failed: %s: %s\n",
++			error.name, error.message);
++	dbus_error_free(&error);
++	if (connection)
++		dbus_connection_close(connection);
++	free(address);
++	return NULL;
++}
++
+ pxProxyFactory *px_proxy_factory_new(void)
+ {
+ 	pxProxyFactory *factory;
++	bool is_configured;
+ 
+ 	factory = malloc(sizeof(*factory));
+ 	if (!factory)
+@@ -45,6 +125,10 @@ pxProxyFactory *px_proxy_factory_new(void)
+ 
+ 	memset(factory, 0, sizeof(*factory));
+ 
++	factory->conn = configured_dbus_bus(&is_configured);
++	if (is_configured)
++		return factory;
++
+ 	factory->conn = dbus_bus_get_private(DBUS_BUS_SYSTEM, NULL);
+ 	if (!factory->conn) {
+ 		free(factory);
+@@ -61,7 +145,8 @@ void px_proxy_factory_free(pxProxyFactory *factory)
+ 	if (!factory)
+ 		return;
+ 
+-	dbus_connection_close(factory->conn);
++	if (factory->conn)
++		dbus_connection_close(factory->conn);
+ 
+ 	free(factory);
+ }
+@@ -170,6 +255,9 @@ char **px_proxy_factory_get_proxies(pxProxyFactory *factory, const char *url)
+ 	if (!url)
+ 		return NULL;
+ 
++	if (!factory->conn)
++		goto direct;
++
+ 	msg = dbus_message_new_method_call("org.pacrunner",
+ 			"/org/pacrunner/client", "org.pacrunner.Client",
+ 							"FindProxyForURL");
